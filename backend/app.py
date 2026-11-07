@@ -5,8 +5,7 @@ from pymongo import MongoClient
 
 app = Flask(__name__)
 
-# MongoDB Atlas Connection Setup
-MONGO_URI = os.getenv("MONGO_URI", "mongodb+srv://user:pass@cluster.mongodb.net/test?retryWrites=true&w=majority")
+MONGO_URI = os.getenv("MONGO_URI", "mongodb+srv://dummy:1234@cluster0.qqeazm5.mongodb.net/tutedude_db?retryWrites=true&w=majority")
 try:
     mongo_client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=5000)
     db = mongo_client["tutedude_db"]
@@ -14,7 +13,6 @@ try:
 except Exception as e:
     print(f"MongoDB Connection Warning: {e}")
 
-# Task 1 & 2: JSON API Route
 @app.route('/api', methods=['GET'])
 def get_json_data():
     file_path = os.path.join(app.root_path, 'data.json')
@@ -27,7 +25,6 @@ def get_json_data():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-# Task 3: Backend route for To-Do item submission
 @app.route('/submittodoitem', methods=['POST'])
 def submit_todo_item():
     item_name = request.form.get('itemName')
@@ -47,4 +44,4 @@ def index():
     return render_template('todo.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
