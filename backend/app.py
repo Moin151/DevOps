@@ -6,10 +6,12 @@ from pymongo import MongoClient
 app = Flask(__name__)
 
 MONGO_URI = os.getenv("MONGO_URI", "mongodb+srv://dummy:1234@cluster0.qqeazm5.mongodb.net/tutedude_db?retryWrites=true&w=majority")
+
+# Initialize db globally
+db = None
 try:
     mongo_client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=5000)
     db = mongo_client["tutedude_db"]
-    collection = db["todo_collection"]
 except Exception as e:
     print(f"MongoDB Connection Warning: {e}")
 
@@ -33,7 +35,12 @@ def submit_todo_item():
     if not item_name or not item_description:
         return jsonify({"error": "Item Name and Item Description are required"}), 400
         
-    db.todo_collection.insert_one({
+    if db is None:
+        return jsonify({"error": "Database connection not established"}), 500
+
+    # Clean collection reference without typos
+    collection = db["todo_collection"]
+    collection.insert_one({
         "itemName": item_name,
         "itemDescription": item_description
     })
