@@ -1,17 +1,12 @@
 [
   {
     "id": 1,
-    "title": "Python Web Development - Updated",
+    "title": "Python Web Development",
     "status": "Active"
   },
   {
     "id": 2,
     "title": "MongoDB Atlas Integration",
     "status": "Completed"
-  },
-  {
-    "id": 3,
-    "title": "Git Workflow Mastery",
-    "status": "In Progress"
   }
 ]
