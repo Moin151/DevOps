@@ -1,0 +1,17 @@
+{
+  "family": "devops-backend-task",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "256",
+  "memory": "512",
+  "containerDefinitions": [
+    {
+      "name": "backend",
+      "image": "953761113469.dkr.ecr.ap-south-1.amazonaws.com/devops-backend:latest",
+      "portMappings": [
+        { "containerPort": 5000, "hostPort": 5000 }
+      ],
+      "essential": true
+    }
+  ]
+}
