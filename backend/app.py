@@ -29,8 +29,11 @@ def get_json_data():
 
 @app.route('/submittodoitem', methods=['POST'])
 def submit_todo_item():
-    item_name = request.form.get('itemName')
-    item_description = request.form.get('itemDescription')
+    # Support both JSON (from Axios) and Form data
+    data = request.get_json(silent=True) or request.form
+    
+    item_name = data.get('itemName') or data.get('name')
+    item_description = data.get('itemDescription') or data.get('description')
     
     if not item_name or not item_description:
         return jsonify({"error": "Item Name and Item Description are required"}), 400
@@ -38,7 +41,6 @@ def submit_todo_item():
     if db is None:
         return jsonify({"error": "Database connection not established"}), 500
 
-    # Clean collection reference without typos
     collection = db["todo_collection"]
     collection.insert_one({
         "itemName": item_name,
